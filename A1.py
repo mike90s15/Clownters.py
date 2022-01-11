@@ -300,14 +300,14 @@ def main(user):
         clear();print(logo+'\n %s!%s Até breve. %s!%s'%(Verde,Branco,Verde,Branco))
 
 if __name__=='__main__':
-        if path.exists('login') == False:
+        if path.exists('.log') == False:
                 clear();
                 senha=None;
                 user=str(input(f'%s > %sDigite seu nome %s===>%s '%(logo,Branco,Azul,Verde)));
-                while(senha not in ['KoRn']):
+                while(senha not in ['TaMi']):
                         clear();
                         senha=str(input('%s > %sDigite seu nome %s===>%s %s\n%s > Digite a senha%s  ===>%s '%(logo,Branco,Azul,Verde,user,Branco,Azul,Verde)));
-                with open('login','w+') as f:
+                with open('.log','w+') as f:
                         f.write(user);
         else:
                 with open('login','r') as c:

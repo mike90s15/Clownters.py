@@ -17,7 +17,7 @@ except:
 
 def main():
     clear()
-    #links()
+    links()
     clear()
     func = {1:banco, 2:bin, 3:cep, 4:cnpj, 5:ddd, 6:ip, 7:geradorCnpj, 8:geradorCpf}
     while True:

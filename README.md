@@ -13,9 +13,9 @@ bash install.sh
 
 ## Instalação no linux
 ```bash
-apt-get update -y && apt-get upgrade -y
-apt-get install -y git python
-git clone https://github.com/mike90s15/Clownters.py
+sudo apt-get update -y && sudo apt-get upgrade -y
+sudo apt-get install -y git python
+sudo git clone https://github.com/mike90s15/Clownters.py
 cd Clownters.py
-bash install.sh
+sudo bash install.sh
 ```

@@ -17,9 +17,9 @@ except:
 
 def main():
     clear()
-    links()
+    #links()
     clear()
-    func = {1:banco, 2:bin, 3:cep, 4:cnpj, 5:ddd, 6:ip, 7:geradorCnpj, 8:geradorCpf}
+    func = {1:banco, 2:bin, 3:cep, 4:cnpj, 5:covid19, 6:ddd, 7:ip, 8:geradorCnpj, 9:geradorCpf, 10:geradorPessoas}
     while True:
         bannerMenu()
         option = input('\n\033[1;34m ===> \033[1;36m').strip()
@@ -33,6 +33,7 @@ def main():
             continue
         str(func[int(option)]())
 
+
 def sair():
     banner()
     print('\033[1;34m Obrigado por usar o painel Clownters\n Telegram: @Clownters\n YouTube: @Clownters1')
@@ -40,10 +41,8 @@ def sair():
 
 
 def clear():
-    if platform.system() == 'Linux':
-        os.system('clear')
-    else:
-        os.system('cls')
+    if platform.system() == 'Windows': os.system('cls')
+    else: os.system('clear')
 
 
 def links():
@@ -73,14 +72,16 @@ def banner():
 def bannerMenu():
     banner()
     #banner_menu = ['Buscas', 'Geradores', 'Moedas', 'Validadores', 'Calculos', 'cep']
-    banner_menu = ['Consulta de Banco', 'Consulta de Bin', 'Consulta de CEP', 'Consulta de CNPJ', 'Consulta de IP', 'Consulta de DDD']
-    geradores = ['Gerador de CPF', 'Gerador de CNPJ']
+    banner_menu = ['Consulta de Banco', 'Consulta de Bin', 'Consulta de CEP', 'Consulta de CNPJ', 'Consulta de Covid19', 'Consulta de IP', 'Consulta de DDD']
+    geradores = ['Gerador de CPF', 'Gerador de CNPJ', 'Gerador de Pessoas']
     banner_menu = banner_menu + geradores
     a = 0
     for i in sorted(banner_menu):
         a += 1
-        print(f' \033[1;32m[\033[m\033[1;36m0{a}\033[1;32m]\033[m \033[1;36m{str(i): <17}    \033[1;32m]\033[m\033[1;32m       (+_+)')
-    print('\n \033[1;32m[\033[m\033[1;31m99\033[1;32m]\033[m \033[1;36mSair\t\t   \033[1;32m]\033[m\033[1;32m       (+_+)')
+        if a < 10: b = '0' + str(a)
+        else: b = a
+        print(f' \033[1;32m[\033[m\033[1;36m{b}\033[1;32m]\033[m \033[1;36m{str(i): <19}   \033[1;32m]\033[m\033[1;32m      (+_+)')
+    print('\n \033[1;32m[\033[m\033[1;31m99\033[1;32m]\033[m \033[1;36mSair\t\t    \033[1;32m]\033[m\033[1;32m      (+_+)')
     
 
 def readInput(x, typ):
@@ -121,9 +122,17 @@ def retorneMenu():
     if int(input_user) == 0: exit()
     elif int(input_user) == 2: return True
 
+
+def myReplace(x):
+    var = '"\'!@#$%¨&*()_+-´`{[]}^~?/:;<>.,|\\'
+    for i in var:
+        x = x.replace(i, '')
+    return x
+        
+
 # Funções de busca
 def banco():
-     while True:
+    while True:
         for i in range(0, 4):
             if i == 3: return False
             banner()
@@ -141,7 +150,7 @@ def banco():
     
 
 def bin():
-     while True:
+    while True:
         for i in range(0, 4):
             if i == 3: return False
             banner()
@@ -156,7 +165,7 @@ def bin():
             print(f'\033[1;34m  •{i.capitalize(): <7}:\033[0;32m {str(req[i])}')
             time.sleep(0.01)
         if retorneMenu() == True: return True
-
+ 
 
 def cep():
     while True:
@@ -203,6 +212,24 @@ def cnpj():
         if retorneMenu() == True: return True
     
 
+def covid19():
+    while True:
+        for i in range(0, 4):
+            if i == 3: return False
+            banner()
+            input_user = input('\033[1;34m Informe a sigla do estado para a consulta\n ===> \033[1;36m').strip()
+            if input_user == '99' or input_user.lower() == 'q': return True
+            if readInput(input_user, 'empty'): continue
+            if readInput(input_user, 'isalpha') != True: continue
+            break 
+        req = requests.get(f'https://covid19-brazil-api.vercel.app/api/report/v1/brazil/uf/{input_user}').json()
+        print()
+        for i in req.keys():
+            print(f'\033[1;34m  •{i.capitalize(): <8}:\033[0;32m {str(req[i])}')
+            time.sleep(0.01)
+        if retorneMenu() == True: return True
+
+
 def ddd():
     while True:
         for i in range(0, 4):
@@ -233,6 +260,13 @@ def ip():
             input_user = input('\033[1;34m Informe o ip para a consulta\n ===> \033[1;36m').strip()
             if input_user == '99' or input_user.lower() == 'q': return True
             if readInput(input_user, 'empty'): continue
+            '''
+            for i in range(0, len(input_user)):
+                if input_user[i] == '.':
+                    if int(input_user[0:i-4]) > 255:
+                        print('\033[1;33m O IP informado é falso!')
+                        time.sleep(2)
+            '''
             #if readInput(input_user, 'numeric') != True: continue
             break
         req = requests.get(f'http://ip-api.com/json/{input_user}').json()
@@ -241,6 +275,8 @@ def ip():
             print(f'\033[1;34m  •{i.capitalize(): <11}:\033[0;32m {str(req[i])}')
             time.sleep(0.01)
         if retorneMenu() == True: return True
+        # verifica se o ip é valido . 255
+
 
 # Funções de geredores
 def geradorCpf():
@@ -296,6 +332,26 @@ def geradorCnpj():
         else: var = var + str(11 - (soma % 11))
         print(f'\033[1;34m CNPJ gerado:\033[0;32m {var}\n\033[1;34m CNPJ gerado:\033[0;32m {var[0:2]}.{var[2:5]}.{var[5:8]}/{var[8:12]}-{var[12:]}')
         if retorneMenu() == True: return True
+
+
+def geradorPessoas():
+    while True:
+        banner()
+        req = requests.get(f'https://randomuser.me/API/?nat=BR').json()
+        print(req['results'].replace('[', '')) #.replace('[', ''))
+        for i in req.keys():
+            print(f'\033[1;34m  •{i.capitalize(): <8}:\033[0;32m {str(req[i])}')
+            time.sleep(0.01)
+        break
+        #if retorneMenu() == True: return True
+
+
+def geradorEmail():
+    nomes_f = ['Miguel', 'Arthur', 'Gael', 'Théo', 'Heitor', 'Ravi', 'Davi', 'Bernardo', 'Noah', 'Gabriel', 'Samuel', 'Pedro', 'Anthony', 'Isaac', 'Benício', 'Benjamin', 'Matheus', 'Lucas', 'Joaquim', 'Nicolas', 'Lucca', 'Lorenzo', 'Henrique', 'João', 'Miguel', 'Rafael', 'Henry', 'Murilo', 'Levi', 'Guilherme', 'Vicente', 'Felipe', 'Bryan', 'Matteo', 'Bento', 'João', 'Pedro', 'Pietro', 'Leonardo', 'Daniel', 'Gustavo', 'Pedro', 'Henrique', 'João', 'Lucas', 'Emanuel', 'João', 'Caleb', 'Davi', 'Lucca', 'Antônio', 'Eduardo', 'Enrico', 'Caio', 'José', 'Enzo', 'Gabriel', 'Augusto', 'Mathias', 'Vitor', 'Enzo', 'Cauã', 'Francisco', 'Rael', 'João', 'Guilherme', 'Thomas', 'Yuri', 'Yan', 'Anthony', 'Gabriel', 'Oliver', 'Otávio', 'João', 'Gabriel', 'Nathan', 'Davi', 'Lucas', 'Vinícius', 'Theodoro', 'Valentim', 'Ryan', 'Luiz', 'Miguel', 'Arthur', 'Miguel', 'João', 'Vitor', 'Léonovo', 'Ravi', 'Lucca', 'Apollo', 'Thiago', 'Tomás', 'Martin', 'José', 'Miguel', 'Erick', 'Liam', 'Josué', 'Luan', 'Asafe', 'Raul', 'José', 'Pedro', 'Dominic', 'Kauê', 'Kalel', 'Luiz', 'Henrique', 'Dom', 'Davi', 'Miguel', 'Estevão', 'Breno', 'Davi', 'Luiz', 'Thales', 'Israel']
+    nomes_m = ['Helena', 'Alice', 'Laura', 'Manuela', 'Sophia', 'Isabella', 'Luísa', 'Heloísa', 'Cecília', 'Maitê', 'Eloá', 'Elisa', 'Liz', 'Júlia', 'Maria', 'Luísa', 'Valentina', 'Maria', 'Alice', 'Lívia', 'Antonella', 'Lorena', 'Ayla', 'Isis', 'Maria', 'Júlia', 'Maya', 'Maria', 'Clara', 'Esther', 'Giovanna', 'Lara', 'Sarah', 'Beatriz', 'Aurora', 'Mariana', 'Maria', 'Cecília', 'Olívia', 'Maria', 'Helena', 'Isadora', 'Luna', 'Catarina', 'Melissa', 'Maria', 'Eduarda', 'Lavínia', '', 'Agatha', '', 'Emanuelly', 'Maria', 'Alícia', 'Rebeca', 'Ana', 'Clara', 'Yasmin', 'Clara', 'Marina', 'Ana', 'Júlia', 'Ana', 'Luísa', 'Isabelly', 'Ana', 'Laura', 'Rafaela', 'Ana', 'Liz', 'Stella', 'Gabriela', 'Vitória', 'Allana', 'Mirella', 'Milena', 'Bella', 'Ana', 'Nicole', 'Emilly', 'Maria', 'Vitória', 'Mariah', 'Clarice', 'Letícia', 'Laís', 'Maria', 'Liz', 'Bianca', 'Melina', 'Jade', 'Ana', 'Beatriz', 'Maria', 'Fernanda', 'Betina', 'Maria', 'Valentina', 'Maria', 'Laura', 'Heloíse', 'Maria', 'Isis', 'Zoe', 'Louise', 'Malu', 'Melinda', 'Ana', 'Cecília', 'Ana', 'Lívia', 'Ana', 'Vitória', 'Maria', 'Heloísa', 'Chloe', 'Maria', 'Flor', 'Pietra', 'Pérola', 'Ana', 'Sophia', 'Maria', 'Elisa', 'Gabrielly', 'Larissa', 'Maria', 'Eloá', 'Eduarda']
+    nomes_a = nomes_f + nomes_m
+    print(f'Email: {random.choice(nomes_a)}@exemplo.com')
+
 
 if __name__ == '__main__':
     try: 

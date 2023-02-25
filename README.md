@@ -5,17 +5,25 @@
 ## Instalação no termux
 ```bash
 pkg update -y && pkg upgrade -y
+
 pkg install -y git python
+
 git clone https://github.com/mike90s15/Clownters.py
+
 cd Clownters.py
+
 bash install.sh
 ```
 
 ## Instalação no linux
 ```bash
 apt-get update -y && apt-get upgrade -y
+
 apt-get install -y git python
+
 git clone https://github.com/mike90s15/Clownters.py
+
 cd Clownters.py
+
 sudo bash install.sh
 ```

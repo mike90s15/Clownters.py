@@ -1,4 +1,4 @@
-# Clownters
+# Clownters Python
 
 <!-- ![photo](https://user-images.githubusercontent.com/82988362/141663319-68fd830d-98d9-4bab-bf91-de40e606038e.jpg) -->
 

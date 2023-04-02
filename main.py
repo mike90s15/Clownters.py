@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #create by Mike Edwards
 # Em desenvolvimento #
-
+ 
 #lib 
 import os
 import platform
@@ -19,7 +19,7 @@ def main():
     clear()
     #links()
     clear()
-    func = {1:banco, 2:bin, 3:cep, 4:cnpj, 5:covid19, 6:ddd, 7:ip, 8:geradorCnpj, 9:geradorCpf, 10:geradorPessoas}
+    func = {1:banco, 2:bin, 3:cep, 4:cnpj, 5:covid19, 6:ddd, 7:ip, 8:geradorCnpj, 9:geradorCpf, 10:geradorPessoas, 11:validadorCnpj}
     while True:
         bannerMenu()
         option = input('\n\033[1;34m ===> \033[1;36m').strip()
@@ -27,7 +27,7 @@ def main():
         if option.lower() == 'q': return 0
         if readInput(option, 'numeric') != True: continue
         if int(option) == 99 or int(option) == 0: return 0
-        if int(option) > 10:
+        if int(option) > 11:
             print(' option invalida!')
             time.sleep(1)
             continue
@@ -74,7 +74,8 @@ def bannerMenu():
     #banner_menu = ['Buscas', 'Geradores', 'Moedas', 'Validadores', 'Calculos', 'cep']
     banner_menu = ['Consulta de Banco', 'Consulta de Bin', 'Consulta de CEP', 'Consulta de CNPJ', 'Consulta de Covid19', 'Consulta de IP', 'Consulta de DDD']
     geradores = ['Gerador de CPF', 'Gerador de CNPJ', 'Gerador de Pessoas']
-    banner_menu = banner_menu + geradores
+    validadores = ['Validador de CNPJ']
+    banner_menu = banner_menu + geradores + validadores
     a = 0
     for i in sorted(banner_menu):
         a += 1
@@ -108,7 +109,7 @@ def readInput(x, typ):
 
 def retorneMenu():
     lst = ['Continue', 'Retorne para o menu', 'Sair do menu']
-    print('\n', '=' * 39, '\n\n\033[1;34m Continue ou retornar ao menu principal?\n')
+    print('\n\033[1;32m', '=' * 39, '\n\n\033[1;34m Continue ou retornar ao menu principal?\n')
     a = 0
     for i in lst:
         a += 1
@@ -315,7 +316,6 @@ def geradorCnpj():
             var = var + str(random.randint(0,9))
         var = var + '0001'
         num = 6
-        #var = '112223330001'
         for i in range(0, 12):
             num -= 1
             if num < 2: num = 9
@@ -351,6 +351,54 @@ def geradorEmail():
     nomes_m = ['Helena', 'Alice', 'Laura', 'Manuela', 'Sophia', 'Isabella', 'Luísa', 'Heloísa', 'Cecília', 'Maitê', 'Eloá', 'Elisa', 'Liz', 'Júlia', 'Maria', 'Luísa', 'Valentina', 'Maria', 'Alice', 'Lívia', 'Antonella', 'Lorena', 'Ayla', 'Isis', 'Maria', 'Júlia', 'Maya', 'Maria', 'Clara', 'Esther', 'Giovanna', 'Lara', 'Sarah', 'Beatriz', 'Aurora', 'Mariana', 'Maria', 'Cecília', 'Olívia', 'Maria', 'Helena', 'Isadora', 'Luna', 'Catarina', 'Melissa', 'Maria', 'Eduarda', 'Lavínia', '', 'Agatha', '', 'Emanuelly', 'Maria', 'Alícia', 'Rebeca', 'Ana', 'Clara', 'Yasmin', 'Clara', 'Marina', 'Ana', 'Júlia', 'Ana', 'Luísa', 'Isabelly', 'Ana', 'Laura', 'Rafaela', 'Ana', 'Liz', 'Stella', 'Gabriela', 'Vitória', 'Allana', 'Mirella', 'Milena', 'Bella', 'Ana', 'Nicole', 'Emilly', 'Maria', 'Vitória', 'Mariah', 'Clarice', 'Letícia', 'Laís', 'Maria', 'Liz', 'Bianca', 'Melina', 'Jade', 'Ana', 'Beatriz', 'Maria', 'Fernanda', 'Betina', 'Maria', 'Valentina', 'Maria', 'Laura', 'Heloíse', 'Maria', 'Isis', 'Zoe', 'Louise', 'Malu', 'Melinda', 'Ana', 'Cecília', 'Ana', 'Lívia', 'Ana', 'Vitória', 'Maria', 'Heloísa', 'Chloe', 'Maria', 'Flor', 'Pietra', 'Pérola', 'Ana', 'Sophia', 'Maria', 'Elisa', 'Gabrielly', 'Larissa', 'Maria', 'Eloá', 'Eduarda']
     nomes_a = nomes_f + nomes_m
     print(f'Email: {random.choice(nomes_a)}@exemplo.com')
+
+# Validadores
+def validadorCartao():
+    pass
+
+
+def validadorCnpj():
+    while True:
+        for i in range(0, 4):
+            if i == 3: return False
+            banner()
+            input_user = input('\033[1;34m Informe o CNPJ para a validação\n ===> \033[1;36m').strip().replace('-', '')
+            if input_user == '99' or input_user.lower() == 'q': return True
+            if readInput(input_user, 'empty'): continue
+            input_user = myReplace(input_user)
+            if readInput(input_user, 'numeric') != True: continue
+            break
+        soma = 0
+        num = 6
+        cnpj = input_user
+        input_user = str(input_user[0:12])
+        for i in range(0, 12):
+            num -= 1
+            if num < 2: num = 9
+            soma += int(input_user[i:i+1]) * num
+        if (soma % 11) < 2: input_user = input_user + '0'
+        else: input_user = input_user + str(11 - (soma % 11))
+        soma = 0 
+        num = 6
+        for i in range(0, 13):
+            soma += int(input_user[i:i+1]) * num
+            num -= 1
+            if num < 2: num = 9
+        if (soma % 11) < 2: input_user = input_user + '0'
+        else: input_user = input_user + str(11 - (soma % 11))
+        if input_user == cnpj:
+            print(f'\n\033[0;32m  CNPJ: {input_user[0:2]}.{input_user[2:5]}.{input_user[5:8]}/{input_user[8:12]}-{input_user[12::]}\033[1;32m válido')
+        else:
+            print(f'\n\033[0;32m  CNPJ: {input_user[0:2]}.{input_user[2:5]}.{input_user[5:8]}/{input_user[8:12]}-{input_user[12::]}\033[1;31m inválido')
+        if retorneMenu() == True: return True
+
+
+def validadorCpf():
+    pass
+
+
+def validadorRg():
+    pass
 
 
 if __name__ == '__main__':

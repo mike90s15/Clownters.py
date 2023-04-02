@@ -27,3 +27,6 @@ cd Clownters.py
 
 sudo bash install.sh
 ```
+
+## Como usa
+Para navegar basta escolher uma opção equivalente ao seu número e quando quiser volta digite a letra q.

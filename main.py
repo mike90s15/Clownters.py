@@ -19,7 +19,7 @@ def main():
     clear()
     #links()
     clear()
-    func = {1:banco, 2:bin, 3:cep, 4:cnpj, 5:covid19, 6:ddd, 7:ip, 8:geradorCnpj, 9:geradorCpf, 10:geradorPessoas, 11:validadorCnpj}
+    func = {1:banco, 2:bin, 3:cep, 4:cnpj, 5:covid19, 6:ddd, 7:ip, 8:geradorCnpj, 9:geradorCpf, 10:geradorPessoas, 11:validadorCnpj, 12:validadorCpf}
     while True:
         bannerMenu()
         option = input('\n\033[1;34m ===> \033[1;36m').strip()
@@ -27,7 +27,7 @@ def main():
         if option.lower() == 'q': return 0
         if readInput(option, 'numeric') != True: continue
         if int(option) == 99 or int(option) == 0: return 0
-        if int(option) > 11:
+        if int(option) > 12:
             print(' option invalida!')
             time.sleep(1)
             continue
@@ -74,7 +74,7 @@ def bannerMenu():
     #banner_menu = ['Buscas', 'Geradores', 'Moedas', 'Validadores', 'Calculos', 'cep']
     banner_menu = ['Consulta de Banco', 'Consulta de Bin', 'Consulta de CEP', 'Consulta de CNPJ', 'Consulta de Covid19', 'Consulta de IP', 'Consulta de DDD']
     geradores = ['Gerador de CPF', 'Gerador de CNPJ', 'Gerador de Pessoas']
-    validadores = ['Validador de CNPJ']
+    validadores = ['Validador de CNPJ', 'Validador de CPF']
     banner_menu = banner_menu + geradores + validadores
     a = 0
     for i in sorted(banner_menu):
@@ -387,14 +387,51 @@ def validadorCnpj():
         if (soma % 11) < 2: input_user = input_user + '0'
         else: input_user = input_user + str(11 - (soma % 11))
         if input_user == cnpj:
-            print(f'\n\033[0;32m  CNPJ: {input_user[0:2]}.{input_user[2:5]}.{input_user[5:8]}/{input_user[8:12]}-{input_user[12::]}\033[1;32m válido')
+            print(f'\n\033[1;34m  CNPJ:\033[0;32m {input_user[0:2]}.{input_user[2:5]}.{input_user[5:8]}/{input_user[8:12]}-{input_user[12::]}\033[1;32m válido')
         else:
-            print(f'\n\033[0;32m  CNPJ: {input_user[0:2]}.{input_user[2:5]}.{input_user[5:8]}/{input_user[8:12]}-{input_user[12::]}\033[1;31m inválido')
+            print(f'\n\033[1;34m  CNPJ:\033[0;32m {input_user[0:2]}.{input_user[2:5]}.{input_user[5:8]}/{input_user[8:12]}-{input_user[12::]}\033[1;31m inválido')
         if retorneMenu() == True: return True
+        # printa a variavel original caso o cnpj seja falso
+        # varificar tamanho para evitar erro
 
 
 def validadorCpf():
-    pass
+      while True:
+        for i in range(0, 4):
+            if i == 3: return False
+            banner()
+            input_user = input('\033[1;34m Informe o CPF para a validação\n ===> \033[1;36m').strip().replace('-', '')
+            if input_user == '99' or input_user.lower() == 'q': return True
+            if readInput(input_user, 'empty'): continue
+            input_user = myReplace(input_user)
+            if readInput(input_user, 'numeric') != True: continue
+            break
+        soma = 0
+        cpf = input_user
+        input_user = str(input_user[0:9])
+        num = 11
+        for i in range(0, 9):
+            num -= 1
+            soma += int(input_user[i:i+1]) * num
+        if (soma % 11) < 2: soma = 0
+        else: soma = 11 - (soma % 11)
+        input_user = input_user + str(soma)
+        soma = 0
+        num = 11
+        for i in range(0, 10):
+            soma += int(input_user[i:i+1]) * num
+            num -= 1
+        if (soma % 11) < 2: soma = 0
+        else: soma = 11 - (soma % 11)
+        input_user = input_user + str(soma)
+        if input_user == cpf:
+            print(f'\n\033[1;34m  CPF:\033[0;32m {cpf[0:3]}.{cpf[3:6]}.{cpf[6:9]}-{cpf[9:]}\033[1;32m válido')
+        else: 
+            print(f'\n\033[1;34m  CPF:\033[0;32m {cpf[0:3]}.{cpf[3:6]}.{cpf[6:9]}-{cpf[9:]}\033[1;31m inválido')
+        if retorneMenu() == True: return True
+        # cria uma função a parte para a logica cpf e valida
+        # varificar tamanho para evitar erro
+
 
 
 def validadorRg():

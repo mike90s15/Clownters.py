@@ -19,7 +19,7 @@ def main():
     clear()
     #links()
     clear()
-    func = {1:banco, 2:bin, 3:cep, 4:cnpj, 5:covid19, 6:ddd, 7:ip, 8:geradorCnpj, 9:geradorCpf, 10:geradorPessoas, 11:validadorCnpj, 12:validadorCpf}
+    func = {1:banco, 2:bin, 3:cep, 4:cnpj, 5:covid19, 6:ddd, 7:ip, 8:geradorCnpj, 9:geradorCpf, 10:geradorPessoas, 11:validadorCnpj, 12:validadorCpf, 13:validadorRg}
     while True:
         bannerMenu()
         option = input('\n\033[1;34m ===> \033[1;36m').strip()
@@ -27,7 +27,7 @@ def main():
         if option.lower() == 'q': return 0
         if readInput(option, 'numeric') != True: continue
         if int(option) == 99 or int(option) == 0: return 0
-        if int(option) > 12:
+        if int(option) > 13:
             print(' option invalida!')
             time.sleep(1)
             continue
@@ -74,7 +74,7 @@ def bannerMenu():
     #banner_menu = ['Buscas', 'Geradores', 'Moedas', 'Validadores', 'Calculos', 'cep']
     banner_menu = ['Consulta de Banco', 'Consulta de Bin', 'Consulta de CEP', 'Consulta de CNPJ', 'Consulta de Covid19', 'Consulta de IP', 'Consulta de DDD']
     geradores = ['Gerador de CPF', 'Gerador de CNPJ', 'Gerador de Pessoas']
-    validadores = ['Validador de CNPJ', 'Validador de CPF']
+    validadores = ['Validador de CNPJ', 'Validador de CPF', 'Validador de RG']
     banner_menu = banner_menu + geradores + validadores
     a = 0
     for i in sorted(banner_menu):
@@ -433,9 +433,33 @@ def validadorCpf():
         # varificar tamanho para evitar erro
 
 
-
 def validadorRg():
-    pass
+    while True:
+        for i in range(0, 4):
+            if i == 3: return False
+            banner()
+            input_user = input('\033[1;34m Informe o RG para a validação\n ===> \033[1;36m').strip().replace('-', '')
+            if input_user == '99' or input_user.lower() == 'q': return True
+            if readInput(input_user, 'empty'): continue
+            input_user = myReplace(input_user)
+            if len(input_user) != 9: continue
+            break
+        rg = input_user
+        input_user = str(input_user[0:8])
+        soma = 0 
+        num = 2
+        for i in range(0, 8):
+            soma += int(input_user[i:i+1]) * num
+            num += 1
+        if (soma % 11) == 0: soma = 0
+        elif (soma % 11) == 1: soma = 'x'
+        else: soma = 11 - (soma % 11)
+        input_user = input_user + str(soma)
+        if input_user == rg:
+            print(f'\n\033[1;34m  RG:\033[0;32m {rg[0:2]}.{rg[2:5]}.{rg[5:8]}-{rg[8:]}\033[1;32m válido')
+        else: 
+            print(f'\n\033[1;34m  RG:\033[0;32m {rg[0:2]}.{rg[2:5]}.{rg[5:8]}-{rg[8:]}\033[1;31m inválido')
+        if retorneMenu() == True: return True
 
 
 if __name__ == '__main__':

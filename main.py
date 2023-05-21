@@ -28,7 +28,7 @@ siglas_estados = {'AC':'Acre', 'AL':'Alagoas', 'AP':'Amapá', 'AM':'Amazonas', '
 
 def main():
     clear()
-    #links()
+    links()
     clear()
     func = {1:banco, 2:bin, 3:cep, 4:cnpj, 5:covid19, 6:ddd, 7:ddi, 8:ip, 9:geradorCnpj, 10:geradorCpf, 11:geradorPessoas, 12:validadorCnpj, 13:validadorCpf, 14:validadorRg}
     while True:

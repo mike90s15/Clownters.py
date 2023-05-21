@@ -1,3 +1,4 @@
+xdg-open https://t.me/channel_90s15
 printf " O programa está em desenvolvimento e pode apresata bugs\n"
 sleep 1
 pkg="sudo apt-get"

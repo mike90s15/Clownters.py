@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-xdg-open https://t.me/channel_90s15
+xdg-open https://t.me/channel_90s15 &>/dev/null 
 printf " O programa está em desenvolvimento e pode apresata bugs\n"
 sleep 1
 pkg="sudo apt-get"
